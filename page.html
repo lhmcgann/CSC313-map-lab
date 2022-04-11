@@ -23,9 +23,9 @@
     <h2>Map of Where Peers are From</h2>
     <div id="map" class="map"></div>
     <script type="text/javascript">
-      //const LACoords = ol.proj.fromLonLat([-118.411741, 34.021055])
+      const LACoords = ol.proj.fromLonLat([-118.238462, 34.056116])
       const circleFeature = new ol.Feature({
-        geometry: new ol.geom.Circle([12127398.797692968, 4063894.123105166], 50),
+        geometry: new ol.geom.Circle(LACoords, 60000),
       });
       circleFeature.setStyle(
         new ol.style.Style({
