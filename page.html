@@ -24,7 +24,8 @@
         // List defines Layers in the map. Can be type Image, Tile, or Vector. Each contains a source which is the protocol used to get the map tiles.
         layers: [
           new ol.layer.Tile({
-            source: new ol.source.OSM()
+            source: new ol.source.OSM(),
+            visible: true
           })
         ],
         // View specifies, center, resolution, and rotation of the map. Simplest way is through center and zoom.
