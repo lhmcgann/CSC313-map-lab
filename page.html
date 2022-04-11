@@ -24,57 +24,57 @@
     <div id="map" class="map"></div>
     <script type="text/javascript">
       //const LACoords = ol.proj.fromLonLat([-118.411741, 34.021055])
-      // const circleFeature = new ol.Feature({
-      //   geometry: new ol.geom.Circle([12127398.797692968, 4063894.123105166], 50),
-      // });
-      // circleFeature.setStyle(
-      //   new ol.style.Style({
-      //     renderer(coordinates, state) {
-      //       const [[x, y], [x1, y1]] = coordinates;
-      //       const ctx = state.context;
-      //       const dx = x1 - x;
-      //       const dy = y1 - y;
-      //       const radius = Math.sqrt(dx * dx + dy * dy);
-      //
-      //       const innerRadius = 0;
-      //       const outerRadius = radius * 1.4;
-      //
-      //       const gradient = ctx.createRadialGradient(
-      //         x,
-      //         y,
-      //         innerRadius,
-      //         x,
-      //         y,
-      //         outerRadius
-      //       );
-      //       gradient.addColorStop(0, 'rgba(255,0,0,0)');
-      //       gradient.addColorStop(0.6, 'rgba(255,0,0,0.2)');
-      //       gradient.addColorStop(1, 'rgba(255,0,0,0.8)');
-      //       ctx.beginPath();
-      //       ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
-      //       ctx.fillStyle = gradient;
-      //       ctx.fill();
-      //
-      //       ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
-      //       ctx.strokeStyle = 'rgba(255,0,0,1)';
-      //       ctx.stroke();
-      //     },
-      //   })
-      // );
+      const circleFeature = new ol.Feature({
+        geometry: new ol.geom.Circle([12127398.797692968, 4063894.123105166], 50),
+      });
+      circleFeature.setStyle(
+        new ol.style.Style({
+          renderer(coordinates, state) {
+            const [[x, y], [x1, y1]] = coordinates;
+            const ctx = state.context;
+            const dx = x1 - x;
+            const dy = y1 - y;
+            const radius = Math.sqrt(dx * dx + dy * dy);
+
+            const innerRadius = 0;
+            const outerRadius = radius * 1.4;
+
+            const gradient = ctx.createRadialGradient(
+              x,
+              y,
+              innerRadius,
+              x,
+              y,
+              outerRadius
+            );
+            gradient.addColorStop(0, 'rgba(255,0,0,0)');
+            gradient.addColorStop(0.6, 'rgba(255,0,0,0.2)');
+            gradient.addColorStop(1, 'rgba(255,0,0,0.8)');
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+            ctx.strokeStyle = 'rgba(255,0,0,1)';
+            ctx.stroke();
+          },
+        })
+      );
       var map = new ol.Map({
         // Attach map to div element: target = div's id
         target: 'map',
         // List defines Layers in the map. Can be type Image, Tile, or Vector. Each contains a source which is the protocol used to get the map tiles.
         layers: [
-          new ol.layer.TileLayer({
+          new ol.layer.Tile({
             source: new ol.source.OSM(),
             visible: true
-          })//,
-          // new ol.layer.VectorLayer({
-          //   source: new ol.source.VectorSource({
-          //     features: [circleFeature]
-          //   }),
-          // }),
+          }),
+          new ol.layer.Vector({
+            source: new ol.source.Vector({
+              features: [circleFeature]
+            }),
+          }),
         ],
         // View specifies, center, resolution, and rotation of the map. Simplest way is through center and zoom.
         view: new ol.View({
