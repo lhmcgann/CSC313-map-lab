@@ -19,19 +19,19 @@
     <div id="map" class="map"></div>
     <script type="text/javascript">
       var map = new ol.Map({
-        <!-- Attach map to div element: target = div's id -->
+        // Attach map to div element: target = div's id
         target: 'map',
-        <!-- List defines Layers in the map. Can be type Image, Tile, or Vector. Each contains a source which is the protocol used to get the map tiles. -->
+        // List defines Layers in the map. Can be type Image, Tile, or Vector. Each contains a source which is the protocol used to get the map tiles.
         layers: [
           new ol.layer.Tile({
             source: new ol.source.OSM()
           })
         ],
-        <!-- View specifies, center, resolution, and rotation of the map. Simplest way is through center and zoom. -->
+        // View specifies, center, resolution, and rotation of the map. Simplest way is through center and zoom.
         view: new ol.View({
-          <!-- Center map on SLO coordinates (longitude, latitude) -->
+          // Center map on SLO coordinates (longitude, latitude)
           center: ol.proj.fromLonLat([-120.670375, 35.272506]),
-          <!-- Zoom in. 0 = no zoom. -->
+          // Zoom in. 0 = no zoom.
           zoom: 6
         })
       });
