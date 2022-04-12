@@ -23,12 +23,6 @@
     <h2>Map of Where Peers are From</h2>
     <div id="map" class="map"></div>
     <script type="text/javascript">
-      const baseRadius = 60000;
-      const LACoords = ol.proj.fromLonLat([-118.238462, 34.056116])
-      const circleFeature = new ol.Feature({
-        geometry: new ol.geom.Circle(LACoords, baseRadius),
-      });
-
       function styleCircle(circle, color, radiusFactor) {
         circle.setStyle(
           new ol.style.Style({
@@ -51,7 +45,15 @@
           })
         );
       }
-      styleCircle(circleFeature, 'blue', 1);
+      // create circles
+      const baseRadius = 60000; // radius of circle if radiusFactor = 1
+
+      // LA circle
+      const LACoords = ol.proj.fromLonLat([-118.238462, 34.056116])
+      const LACircle = new ol.Feature({
+        geometry: new ol.geom.Circle(LACoords, baseRadius),
+      });
+      styleCircle(LACircle, 'blue', 1);
 
       var map = new ol.Map({
         // Attach map to div element: target = div's id
@@ -64,7 +66,7 @@
           }),
           new ol.layer.Vector({
             source: new ol.source.Vector({
-              features: [circleFeature]
+              features: [LACircle]
             }),
           }),
         ],
