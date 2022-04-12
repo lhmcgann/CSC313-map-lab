@@ -12,12 +12,62 @@
     </style>
     <!--Include the OpenLayers JavaScript library. Here, simply pointing to openlayers.org to include whole lib. -->
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/build/ol.js"></script>
+    <!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer -->
+    <script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"></script>
+    <!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"></script>
     <title>OpenLayers Hometown Map</title>
   </head>
   <body>
     <h2>Map of Where Peers are From</h2>
     <div id="map" class="map"></div>
     <script type="text/javascript">
+      function createCircleFeature(lon, lat) {
+        // params are center coords [longitude, latitude]
+        const center = ol.proj.fromLonLat([lon, lat]);
+        const baseRadius = 12000;
+        const cf = new ol.Feature({
+          geometry: new ol.geom.Circle(center, baseRadius),
+        });
+        return cf;
+      }
+
+      function styleCircle(circle, color, radiusFactor) {
+        circle.setStyle(
+          new ol.style.Style({
+            renderer(coordinates, state) {
+              const [[x, y], [x1, y1]] = coordinates;
+              const ctx = state.context;
+              const dx = x1 - x;
+              const dy = y1 - y;
+              const radius = Math.sqrt(dx * dx + dy * dy) * radiusFactor;
+
+              ctx.beginPath();
+              ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+              ctx.fillStyle = color;
+              ctx.fill();
+
+              ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+              ctx.strokeStyle = color;
+              ctx.stroke();
+            },
+          })
+        );
+      }
+
+      // LA circle: 3 people in LA county
+      const LACircle = createCircleFeature(-118.238462, 34.056116);
+      styleCircle(LACircle, 'red', 3);
+
+      // SD circle: 2 people in San Diego county
+      const SDCircle = createCircleFeature(-117.107764, 32.824989);
+      styleCircle(SDCircle, 'blue', 2);
+
+      // San Mateo circle: 1 person in San Mateo county
+      const SMCircle = createCircleFeature(-122.314966, 37.557206);
+      styleCircle(SMCircle, 'green', 1);
+
       var map = new ol.Map({
         // Attach map to div element: target = div's id
         target: 'map',
@@ -26,12 +76,27 @@
           new ol.layer.Tile({
             source: new ol.source.OSM(),
             visible: true
-          })
+          }),
+          new ol.layer.Vector({
+            source: new ol.source.Vector({
+              features: [LACircle]
+            }),
+          }),
+          new ol.layer.Vector({
+            source: new ol.source.Vector({
+              features: [SDCircle]
+            }),
+          }),
+          new ol.layer.Vector({
+            source: new ol.source.Vector({
+              features: [SMCircle]
+            }),
+          }),
         ],
         // View specifies, center, resolution, and rotation of the map. Simplest way is through center and zoom.
         view: new ol.View({
-          // Center map on SLO coordinates (longitude, latitude)
-          center: ol.proj.fromLonLat([-120.670375, 35.272506]),
+          // Center map on Cal Poly coordinates (longitude, latitude)
+          center: ol.proj.fromLonLat([-120.655540, 35.298629]),
           // Zoom in. 0 = no zoom.
           zoom: 6
         })
